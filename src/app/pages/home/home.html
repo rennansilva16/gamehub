@@ -1,13 +1,19 @@
+
 <div class="home__container">
   @if (isLoading) {
     <p>Carregando jogos...</p>
-  } @else if(errorMessage) {
-    <p>Erro ao carregar jogos: {{ errorMessage }}</p>
-  }
-  @else {
-    @for(game of games; track game.id){
-      <app-card [gameCover]="game.background_image ?? ''" [gameLabel]="game.name" [gameType]="''" [gamePrice]="''">
-      </app-card>
+  } @else if (errorMessage) {
+    <p>{{ errorMessage }}</p>
+  } @else if (games.length === 0) {
+    <p>Nenhum jogo encontrado.</p>
+  } @else {
+    @for (game of games; track game.id) {
+      <app-card
+        [gameCover]="game.background_image ?? ''"
+        [gameLabel]="game.name"
+        [gameType]="''"
+        [gamePrice]="''"
+      ></app-card>
     }
   }
 </div>
