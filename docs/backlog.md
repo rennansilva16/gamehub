@@ -18,23 +18,21 @@ Manter uma lista organizada das tarefas necessárias para desenvolver o GameHub 
 - [x] **P0 — Tratar carregamento e erro:** informar ao usuário quando os jogos estiverem carregando ou quando ocorrer uma falha.
 - [x] **P0 — Testar o serviço da RAWG:** verificar a requisição HTTP e os parâmetros enviados.
 - [x] **P0 — Validar compilação:** confirmar que o frontend compila após a integração inicial.
-- [ ] **P0 — Melhorar o estado vazio:** informar quando a consulta não retornar jogos.
-- [ ] **P0 — Implementar pesquisa:** permitir pesquisar jogos pelo nome.
-- [ ] **P0 — Implementar filtros:** filtrar jogos por plataforma e gênero.
-- [ ] **P0 — Implementar paginação:** permitir navegar pelos resultados do catálogo.
-- [ ] **P0 — Criar detalhes do jogo:** exibir informações adicionais de um título selecionado.
 
-## Etapa 2 — Backend e RAWG
+**Critério de conclusão:** aplicação Angular executando de forma estável, consultando a RAWG e exibindo os jogos na página inicial, com estados de carregamento e tratamento de erros.
+
+## Etapa 2 — Backend e integração com a RAWG
 
 - [ ] **P0 — Criar projeto ASP.NET Core Web API:** estabelecer a estrutura inicial do backend.
-- [ ] **P0 — Configurar a RAWG no backend:** manter a chave de acesso fora do código público.
-- [ ] **P0 — Implementar integração com a RAWG:** criar um serviço responsável pelas consultas externas.
-- [ ] **P0 — Criar endpoint de catálogo:** disponibilizar jogos para o frontend.
-- [ ] **P0 — Criar endpoint de pesquisa:** permitir consultas por nome.
-- [ ] **P0 — Implementar filtros e paginação:** repassar e validar os parâmetros necessários.
-- [ ] **P0 — Integrar Angular à API própria:** substituir as chamadas diretas à RAWG.
-- [ ] **P0 — Tratar falhas do backend:** padronizar o tratamento de erros.
-- [ ] **P1 — Criar testes do backend:** cobrir os principais comportamentos dos serviços e endpoints.
+- [ ] **P0 — Configurar a aplicação:** preparar a execução local e a comunicação entre frontend e backend.
+- [ ] **P0 — Configurar a chave da RAWG com segurança:** manter a chave fora do código público.
+- [ ] **P0 — Implementar integração com a RAWG:** criar um serviço backend responsável pelas consultas externas.
+- [ ] **P0 — Criar endpoint de catálogo:** disponibilizar os jogos da RAWG para o frontend.
+- [ ] **P0 — Integrar Angular à API do GameHub:** substituir as chamadas diretas à RAWG pelas chamadas à API própria.
+- [ ] **P0 — Tratar falhas do backend:** permitir que o frontend apresente mensagens adequadas quando ocorrerem erros.
+- [ ] **P1 — Criar testes do backend:** verificar os principais comportamentos dos serviços e endpoints.
+
+**Critério de conclusão:** o Angular continua exibindo os jogos como atualmente, mas passa a consultar a API do GameHub, que será responsável por buscar os dados na RAWG sem expor a chave de acesso no navegador.
 
 ## Etapa 3 — PostgreSQL e biblioteca
 

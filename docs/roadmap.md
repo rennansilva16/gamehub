@@ -6,9 +6,9 @@ Desenvolver o GameHub 1.0, uma plataforma para descobrir jogos e gerenciar uma b
 
 O desenvolvimento será incremental. Cada etapa deverá produzir uma entrega funcional antes de avançarmos para a próxima.
 
-## Etapa 1 — Catálogo inicial
+## Etapa 1 — Catálogo inicial (protótipo)
 
-**Objetivo:** apresentar jogos da RAWG na interface Angular.
+Objetivo: validar a obtenção dos jogos da RAWG e sua exibição inicial na interface Angular, utilizando uma integração direta com a API externa.
 
 - [x] Criar a estrutura inicial do frontend.
 - [x] Criar o serviço de integração com a RAWG.
@@ -17,27 +17,29 @@ O desenvolvimento será incremental. Cada etapa deverá produzir uma entrega fun
 - [x] Implementar estados de carregamento e erro.
 - [x] Criar testes básicos para o serviço da RAWG.
 - [x] Validar a compilação do frontend.
-- [ ] Revisar a interface do catálogo e o estado vazio.
-- [ ] Implementar pesquisa, filtros e paginação.
-- [ ] Preparar a visualização de detalhes dos jogos.
+- [x] Revisar a interface do catálogo.
 
-**Critério de conclusão:** o usuário consegue explorar o catálogo com feedback adequado durante o carregamento, em caso de erro e quando não houver resultados.
+Critério de conclusão: a aplicação obtém os jogos da RAWG e os exibe na interface, com estados de carregamento e erro implementados.
+
+Observação: esta etapa validou o catálogo inicial. A integração direta com a RAWG no frontend será substituída pela integração via backend na Etapa 2.
 
 ## Etapa 2 — Backend e integração com a RAWG
 
-**Objetivo:** criar a API própria do GameHub e retirar a dependência direta da RAWG no frontend.
+**Objetivo:** criar a API própria do GameHub e substituir a integração direta do frontend com a RAWG por chamadas ao backend.
 
 - [ ] Criar a solução ASP.NET Core Web API.
-- [ ] Configurar os ambientes de desenvolvimento.
-- [ ] Criar a configuração segura da chave da RAWG.
+- [ ] Configurar as opções de desenvolvimento e a comunicação entre frontend e backend.
+- [ ] Configurar a chave da RAWG de forma segura no backend.
 - [ ] Implementar um serviço backend para consultar a RAWG.
-- [ ] Criar endpoints para listar e pesquisar jogos.
-- [ ] Implementar filtros e paginação compatíveis com o catálogo.
-- [ ] Configurar o frontend para consumir a API do GameHub.
-- [ ] Tratar erros e respostas da API.
+- [ ] Criar um endpoint para listar jogos.
+- [ ] Implementar pesquisa, filtros e paginação compatíveis com o catálogo.
+- [ ] Configurar o Angular para consumir a API do GameHub.
+- [ ] Implementar tratamento de erros e respostas da API.
 - [ ] Criar testes para os serviços e endpoints principais.
 
-**Critério de conclusão:** o frontend consulta o backend do GameHub, e o backend faz a integração com a RAWG sem expor a chave de acesso no navegador.
+**Critério de conclusão:** o Angular obtém os jogos por meio da API do GameHub, e o backend consulta a RAWG sem expor a chave de acesso no navegador.
+
+**Fora do escopo:** persistência em banco de dados, autenticação e biblioteca pessoal.
 
 ## Etapa 3 — Banco de dados e biblioteca pessoal
 
