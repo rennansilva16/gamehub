@@ -1,117 +1,108 @@
-# 🎮 PlayStation Store
+# GameHub 🎮
 
-Uma aplicação desenvolvida em **Angular** inspirada na interface da PlayStation Store. O objetivo do projeto é praticar os principais conceitos do Angular, como componentização, comunicação entre componentes e data binding, enquanto evolui para uma aplicação completa para compor meu portfólio.
+O **GameHub** é uma plataforma pessoal para descobrir, organizar e acompanhar jogos de diferentes plataformas. A proposta é reunir um catálogo de jogos e permitir que cada usuário mantenha sua própria biblioteca, registrando o que deseja jogar, o que está jogando e o que já concluiu.
 
-> ⚠️ Este projeto está em desenvolvimento e receberá novas funcionalidades nas próximas etapas.
+O projeto está sendo desenvolvido como uma aplicação full stack, utilizando Angular no frontend e ASP.NET Core no backend.
 
-## 📸 Preview
+## Funcionalidades
 
-[Preview](./docs/images/preview.png)
+### MVP — versão 1.0
 
----
+- [x] Integração inicial do catálogo com a RAWG API.
+- [x] Exibição de jogos em cards.
+- [x] Estados iniciais de carregamento e erro.
+- [ ] Pesquisa de jogos por nome.
+- [ ] Filtros por plataforma e gênero.
+- [ ] Paginação do catálogo.
+- [ ] Visualização dos detalhes de um jogo.
+- [ ] Cadastro, login e logout.
+- [ ] Biblioteca pessoal de jogos.
+- [ ] Organização dos jogos por status.
+- [ ] Avaliação pessoal e anotações opcionais.
+- [ ] Dashboard com resumo da biblioteca.
 
-## ✨ Funcionalidades
+A lista representa o escopo planejado para a versão 1.0. Os itens marcados como concluídos correspondem à implementação inicial do catálogo no frontend, não à conclusão de toda a funcionalidade no produto final.
 
-- Interface inspirada na PlayStation Store
-- Componentes reutilizáveis
-- Cards de jogos
-- Labels personalizadas
-- Exibição de preço e plataforma
-- Layout responsivo (em evolução)
+## Tecnologias
 
----
-
-## 🚀 Tecnologias
-
-- Angular 20
+### Frontend
+- Angular
 - TypeScript
-- HTML5
-- CSS3
+- HTML e CSS
 
----
+### Backend
+- C#
+- ASP.NET Core Web API
+- Entity Framework Core
 
-## 📂 Estrutura do Projeto
+### Banco de dados
+- PostgreSQL
 
-```text
-src/
-├── app/
-│   ├── components/
-│   │   ├── card/
-│   │   ├── card-label/
-│   │   ├── card-pricing/
-│   │   ├── home/
-│   │   └── menu-bar/
-│   └── app.ts
-│
-public/
-└── images/
-```
+### Integração externa
+- RAWG Video Games Database API
 
----
+### Testes
+- Vitest e ferramentas de teste do Angular para o frontend.
+- Ferramentas de testes automatizados do .NET para o backend, a definir durante sua implementação.
 
-## ▶️ Executando o projeto
+## Arquitetura planejada
 
-Clone o repositório:
+O Angular será responsável pela interface e pela interação com o usuário. O backend em ASP.NET Core disponibilizará os endpoints da aplicação, fará a integração com a RAWG e controlará o acesso aos dados persistidos no PostgreSQL.
 
-```bash
-git clone <url-do-repositorio>
-```
+A API key da RAWG deverá ficar no backend, sem ser exposta no código público do frontend.
 
-Entre na pasta:
+O banco de dados será utilizado inicialmente para armazenar usuários e suas bibliotecas pessoais. O catálogo completo da RAWG não será copiado para o banco nesta primeira versão.
 
-```bash
-cd store
-```
+## Como executar o frontend
 
-Instale as dependências:
+### Pré-requisitos
+
+- Node.js e npm.
+- Uma chave de API da RAWG para a integração local atual.
+
+### Instalação
 
 ```bash
 npm install
 ```
 
-Execute a aplicação:
+Configure a chave da RAWG no arquivo de ambiente de desenvolvimento utilizado pelo projeto. Não compartilhe nem versione esse arquivo com a chave real.
+
+### Executar
 
 ```bash
 ng serve
 ```
 
-Abra no navegador:
+Depois, acesse `http://localhost:4200/`.
+
+> **Nota:** os comandos acima se referem ao frontend Angular atual. O backend e o banco de dados terão instruções próprias quando estiverem implementados.
+
+## Organização do projeto
+
+A estrutura pode evoluir conforme o desenvolvimento:
 
 ```text
-http://localhost:4200
+GameHub/
+├── docs/
+│   ├── roadmap.md
+│   └── backlog.md
+├── src/
+│   └── ...
+└── README.md
 ```
 
----
+## Escopo da versão 1.0
 
-## 📚 Objetivos de aprendizado
+O foco é criar um catálogo funcional, permitir autenticação e oferecer uma biblioteca pessoal persistida no banco de dados.
 
-Este projeto foi criado para praticar:
+Recursos como integração com a PSN, funcionalidades sociais, recomendações avançadas, estatísticas detalhadas e compras não fazem parte desta versão.
 
-- Componentes Standalone
-- Property Binding
-- Event Binding
-- Data Binding
-- Comunicação entre componentes
-- Organização de componentes
-- Estrutura de projetos Angular
+## Documentação
 
----
+- [Roadmap](docs/roadmap.md): etapas planejadas para o desenvolvimento.
+- [Backlog](docs/backlog.md): tarefas e melhorias a implementar.
 
-## 🛣️ Próximas funcionalidades
+## Status
 
-- [ ] Hero Banner
-- [ ] Carrossel de jogos
-- [ ] Pesquisa de jogos
-- [ ] Filtro por plataforma
-- [ ] Lista dinâmica de jogos
-- [ ] Integração com API
-- [ ] Backend em ASP.NET Core
-- [ ] Banco de dados SQL Server
-- [ ] Sistema de favoritos
-- [ ] Página de detalhes do jogo
-
----
-
-## 👨‍💻 Autor
-
-Desenvolvido por **Rennan Silva**.
+O projeto está em desenvolvimento. A integração inicial do catálogo com a RAWG foi implementada no frontend. As próximas etapas incluem evoluir o catálogo e iniciar o backend para centralizar a integração externa e preparar a persistência dos dados.
