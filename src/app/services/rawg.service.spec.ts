@@ -36,7 +36,7 @@ describe('RawgService', () => {
     );
 
     expect(req.request.method).toBe('GET');
-    expect(req.request.params.get('key')).toBeTruthy();
+    expect(req.request.params.has('key')).toBe(true);
     expect(req.request.params.get('page_size')).toBe('10');
 
     req.flush({
