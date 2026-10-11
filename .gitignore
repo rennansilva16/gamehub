@@ -46,3 +46,10 @@ Thumbs.db
 # Local enviroments variables and secrets
 
 /src/environments/environment.development.ts
+
+# .NET
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
