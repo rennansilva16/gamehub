@@ -8,9 +8,10 @@ O projeto está sendo desenvolvido como uma aplicação full stack, utilizando A
 
 ### MVP — versão 1.0
 
-- [x] Integração inicial do catálogo com a RAWG API.
+- [x] Integração inicial do catálogo com a RAWG API no frontend.
 - [x] Exibição de jogos em cards.
 - [x] Estados iniciais de carregamento e erro.
+- [ ] Criação da API própria para integração com a RAWG.
 - [ ] Pesquisa de jogos por nome.
 - [ ] Filtros por plataforma e gênero.
 - [ ] Paginação do catálogo.
@@ -18,10 +19,7 @@ O projeto está sendo desenvolvido como uma aplicação full stack, utilizando A
 - [ ] Cadastro, login e logout.
 - [ ] Biblioteca pessoal de jogos.
 - [ ] Organização dos jogos por status.
-- [ ] Avaliação pessoal e anotações opcionais.
 - [ ] Dashboard com resumo da biblioteca.
-
-A lista representa o escopo planejado para a versão 1.0. Os itens marcados como concluídos correspondem à implementação inicial do catálogo no frontend, não à conclusão de toda a funcionalidade no produto final.
 
 ## Tecnologias
 
@@ -33,57 +31,32 @@ A lista representa o escopo planejado para a versão 1.0. Os itens marcados como
 ### Backend
 - C#
 - ASP.NET Core Web API
-- Entity Framework Core
 
 ### Banco de dados
-- PostgreSQL
+- PostgreSQL (planejado)
+- Entity Framework Core (planejado)
 
 ### Integração externa
 - RAWG Video Games Database API
 
-### Testes
-- Vitest e ferramentas de teste do Angular para o frontend.
-- Ferramentas de testes automatizados do .NET para o backend, a definir durante sua implementação.
-
-## Arquitetura planejada
+## Arquitetura
 
 O Angular será responsável pela interface e pela interação com o usuário. O backend em ASP.NET Core disponibilizará os endpoints da aplicação, fará a integração com a RAWG e controlará o acesso aos dados persistidos no PostgreSQL.
 
-A API key da RAWG deverá ficar no backend, sem ser exposta no código público do frontend.
+A chave da API da RAWG deverá ficar no backend, sem ser exposta no código público do frontend.
 
 O banco de dados será utilizado inicialmente para armazenar usuários e suas bibliotecas pessoais. O catálogo completo da RAWG não será copiado para o banco nesta primeira versão.
 
-## Como executar o frontend
+## Estrutura do projeto
 
-### Pré-requisitos
-
-- Node.js e npm.
-- Uma chave de API da RAWG para a integração local atual.
-
-### Instalação
-
-```bash
-npm install
-```
-
-Configure a chave da RAWG no arquivo de ambiente de desenvolvimento utilizado pelo projeto. Não compartilhe nem versione esse arquivo com a chave real.
-
-### Executar
-
-```bash
-ng serve
-```
-
-Depois, acesse `http://localhost:4200/`.
-
-> **Nota:** os comandos acima se referem ao frontend Angular atual. O backend e o banco de dados terão instruções próprias quando estiverem implementados.
-
-## Organização do projeto
-
-A estrutura pode evoluir conforme o desenvolvimento:
+A estrutura atual separa o backend da documentação do projeto. Ela poderá evoluir conforme novas funcionalidades forem implementadas.
 
 ```text
 GameHub/
+├── backend/
+│   ├── GameHub.Api/
+│   │   │   └── ...
+│   └── GameHub.slnx
 ├── docs/
 │   ├── roadmap.md
 │   └── backlog.md
@@ -92,17 +65,60 @@ GameHub/
 └── README.md
 ```
 
-## Escopo da versão 1.0
+> A estrutura apresentada é uma referência para a organização atual do projeto. Os arquivos e diretórios podem mudar conforme o desenvolvimento evoluir.
 
-O foco é criar um catálogo funcional, permitir autenticação e oferecer uma biblioteca pessoal persistida no banco de dados.
+## Como executar o frontend
 
-Recursos como integração com a PSN, funcionalidades sociais, recomendações avançadas, estatísticas detalhadas e compras não fazem parte desta versão.
+### Pré-requisitos
+
+- Node.js
+- npm
+
+### Instalação
+
+Na raiz do projeto Angular, execute:
+
+```bash
+npm install
+```
+
+### Execução
+
+```bash
+ng serve
+```
+
+Depois, acesse [http://localhost:4200/](http://localhost:4200/).
+
+## Como executar o backend
+
+### Pré-requisitos
+
+- .NET SDK 10
+
+### Execução
+
+Acesse o diretório do projeto da API:
+
+```bash
+cd backend/GameHub.Api
+```
+
+Execute:
+
+```bash
+dotnet run
+```
 
 ## Documentação
 
 - [Roadmap](docs/roadmap.md): etapas planejadas para o desenvolvimento.
-- [Backlog](docs/backlog.md): tarefas e melhorias a implementar.
+- [Backlog](docs/backlog.md): tarefas, funcionalidades e melhorias a implementar.
 
 ## Status
 
-O projeto está em desenvolvimento. A integração inicial do catálogo com a RAWG foi implementada no frontend. As próximas etapas incluem evoluir o catálogo e iniciar o backend para centralizar a integração externa e preparar a persistência dos dados.
+O projeto está em desenvolvimento.
+
+A integração inicial do catálogo com a RAWG foi implementada diretamente no frontend. A estrutura inicial do backend ASP.NET Core Web API também foi criada, e sua configuração e validação local estão em andamento.
+
+As próximas etapas incluem preparar a API própria para intermediar as consultas à RAWG, implementar a persistência de dados dos usuários e desenvolver as funcionalidades de autenticação e biblioteca pessoal.
