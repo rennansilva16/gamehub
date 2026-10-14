@@ -1,4 +1,5 @@
 using GameHub.Api.Integrations.Rawg;
+using GameHub.Api.Services;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,8 @@ builder.Services.AddHttpClient<IRawgClient, RawgClient>(
       httpClient.BaseAddress = new Uri(options.BaseUrl);
       httpClient.Timeout = TimeSpan.FromSeconds(15);
     });
+
+builder.Services.AddScoped<IGameCatalogService, CatalogService>();
 
 var app = builder.Build();
 
