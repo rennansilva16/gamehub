@@ -1,3 +1,4 @@
+using GameHub.Api.Exceptions;
 using GameHub.Api.Integrations.Rawg;
 using GameHub.Api.Services;
 using Microsoft.Extensions.Options;
@@ -38,7 +39,14 @@ builder.Services.AddHttpClient<IRawgClient, RawgClient>(
 
 builder.Services.AddScoped<IGameCatalogService, CatalogService>();
 
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
 var app = builder.Build();
+
+app.UseExceptionHandler();
+
+app.MapControllers();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -48,6 +56,5 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
 
 app.Run();
