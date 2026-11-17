@@ -28,7 +28,8 @@ public class RawgClientTests
 
     var httpClient = new HttpClient(handler);
 
-    var options = Options.Create(new RawgOptions{
+    var options = Options.Create(new RawgOptions
+    {
       ApiKey = "test-api-key",
       BaseUrl = "https://api.rawg.io/api/"
     });
@@ -42,14 +43,123 @@ public class RawgClientTests
     Assert.Equal("A API da RAWG retornou uma resposta vazia ou inválida.", exception.Message);
   }
 
-  // TODO: Validar o tratamento de falhas de comunicação HTTP.
+  // Validar o tratamento de falhas de comunicação HTTP.
+  [Fact]
+  public async Task GetGamesAsync_WhenHttpRequestFails_ShouldThrowRawgApiException()
+  {
+    // Arrange
+    // Cria o handler que simula falha de comunicação HTTP.
+    var handler = new HttpRequestExceptionHandler();
 
-  // TODO: Validar o tratamento de timeout.
+    var httpClient = new HttpClient(handler)
+    {
+      BaseAddress = new Uri("https://api.rawg.io/api/")
+    };
 
-  // TODO: Validar o comportamento quando o chamador cancela a requisição.
+    var options = Options.Create(new RawgOptions
+    {
+      ApiKey = "test-api-key",
+      BaseUrl = "https://api.rawg.io/api/"
+    });
 
-  // TODO: Validar a montagem da requisição e seus parâmetros, sem expor a chave da API.
+    var client = new RawgClient(httpClient, options);
 
+    // Act & Assert
+
+    // Verifica se o método GetGamesAsync lança RawgApiException com a mensagem correta.
+    var exception = await Assert.ThrowsAsync<RawgApiException>(() => client.GetGamesAsync());
+
+    Assert.Equal("Não foi possível estabelecer comunicação com a RAWG.", exception.Message);
+
+  }
+
+  // Validar o tratamento de timeout.
+  [Fact]
+  public async Task GetGamesAsync_WhenRequestTimesOut_ShouldThrowRawgApiException()
+  {
+    // Arrange
+    // Utilizamos o handler que aguarda indefinidamente, até o token de cancelamento ser acionado.
+    var handler = new CancellationHttpMessageHandler();
+
+    var httpClient = new HttpClient(handler)
+    {
+      BaseAddress = new Uri("https://api.rawg.io/api/"),
+
+      //Configuramos o timeout do HttpClient para um valor baixo, para simular o timeout.
+      Timeout = TimeSpan.FromMilliseconds(100)
+    };
+
+    var options = Options.Create(new RawgOptions
+    {
+      ApiKey = "test-api-key",
+      BaseUrl = "https://api.rawg.io/api/"
+    });
+
+    var client = new RawgClient(httpClient, options);
+
+    // Act
+    // Inicia a requisição, que será interrompida pelo timeout do HttpClient.
+    var requestTask = client.GetGamesAsync();
+
+    // Aguarda até o handler confirmar que recebeu a requisição
+    await handler.RequestStarted.Task;
+
+    // Assert
+    // Verifica se o método propagou RawgApiException com a mensagem correta.
+    var exception = await Assert.ThrowsAsync<RawgApiException>(() => requestTask);
+
+    // A mensagem de exceção deve indicar que a requisição excedeu o tempo limite.
+    Assert.Equal("A requisição à RAWG excedeu o tempo limite.", exception.Message);
+  }
+
+  // Validar o comportamento quando o chamador cancela a requisição.
+
+  [Fact]
+  public async Task GetGamesAsync_WhenCallerCancelsRequest_ShouldThrowOperationCanceledException()
+  {
+    // Arrange
+
+    // Cria uma fonte de cancelamento.
+    // Ela será responsável por solicitar o cancelamento da operação.
+    using var cts = new CancellationTokenSource();
+
+    // Nosso handler específico ficará aguardando o cancelamento.
+    var handler = new CancellationHttpMessageHandler();
+
+    var httpClient = new HttpClient(handler);
+
+    var options = Options.Create(new RawgOptions
+    {
+      ApiKey = "test-api-key",
+      BaseUrl = "https://api.rawg.io/api/"
+    });
+
+    httpClient.BaseAddress = new Uri(options.Value.BaseUrl);
+
+    var client = new RawgClient(httpClient, options);
+
+    // Act
+
+    // Inicia a requisição, passando o token de cancelamento.
+    var requestTask = client.GetGamesAsync(cts.Token);
+
+    // Aguarda até termos certeza de que o handler começou a executar.
+    await handler.RequestStarted.Task;
+
+    // Solicita o cancelamento enquanto a requisição está em andamento.
+    cts.Cancel();
+
+    // Assert
+
+    // Verifica se o método propagou OperationCanceledException.
+    // Não deve transformar o cancelamento em RawgApiException.
+    await Assert.ThrowsAnyAsync<OperationCanceledException>(
+        () => requestTask
+    );
+  }
+
+
+  // Validar a montagem da requisição e seus parâmetros, sem expor a chave da API.
   [Fact]
   public async Task GetGamesAsync_ShouldSendRequestWithCorrectParameters()
   {
@@ -203,7 +313,7 @@ public class RawgClientTests
   private class FakeHttpMessageHandler : HttpMessageHandler
   {
     private readonly HttpResponseMessage _response;
-    public HttpRequestMessage? Request {get; private set; }
+    public HttpRequestMessage? Request { get; private set; }
     public FakeHttpMessageHandler(HttpResponseMessage response)
     {
       _response = response;
@@ -212,6 +322,36 @@ public class RawgClientTests
     {
       Request = request;
       return Task.FromResult(_response);
+    }
+  }
+
+  private class CancellationHttpMessageHandler : HttpMessageHandler
+  {
+    // Sinaliza ao teste que a requisição chegou ao handler.
+    public TaskCompletionSource<bool> RequestStarted { get; } =
+        new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    protected override async Task<HttpResponseMessage> SendAsync(
+        HttpRequestMessage request,
+        CancellationToken cancellationToken)
+    {
+      // Informa ao teste que começamos a processar a requisição.
+      RequestStarted.TrySetResult(true);
+
+      // Aguarda indefinidamente, até o token ser cancelado.
+      // O cancelamento provoca OperationCanceledException.
+      await Task.Delay(Timeout.Infinite, cancellationToken);
+
+      // Não será alcançado neste teste, pois o cancelamento interrompe a espera.
+      throw new InvalidOperationException("A requisição deveria ter sido cancelada.");
+    }
+  }
+
+  private class HttpRequestExceptionHandler : HttpMessageHandler
+  {
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+      throw new HttpRequestException("Simulated HTTP request failure.");
     }
   }
 }

@@ -21,7 +21,7 @@ public class RawgClient : IRawgClient
     {
       var apiKey = Uri.EscapeDataString(_rawgOptions.ApiKey);
       var endpoint = $"games?key={apiKey}&page_size=20";
-      
+
       using var response = await _httpClient.GetAsync(
         endpoint,
         cancellationToken
