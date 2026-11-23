@@ -1,8 +1,7 @@
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { Card } from '../../components/card/card';
-import { RawgService } from '../../services/rawg.service';
-import { RawgGame } from '../../models/rawg-game.model';
+import { GameService } from '../../services/game.service';
+import { Game } from '../../models/game.model';
 
 @Component({
   selector: 'app-home',
@@ -11,23 +10,29 @@ import { RawgGame } from '../../models/rawg-game.model';
   styleUrl: './home.css',
 })
 export class Home implements OnInit {
-  games: RawgGame[] = [];
-  isLoading = true;
-  errorMessage = '';
 
-  constructor(private rawgService: RawgService) {}
+  games = signal<Game[]>([]);
+  isLoading = signal(true);
+  errorMessage = signal('');
+
+  constructor(private gameService: GameService) {}
 
   ngOnInit(): void {
-    this.rawgService.getGames().subscribe({
-      next: (response) => {
-        this.games = response.results;
-        this.isLoading = false;
-        console.log('Games fetched successfully:', this.games);
+    this.gameService.getGames().subscribe({
+      next: (games) => {
+        this.games.set(games);
+        this.isLoading.set(false);
+
+        console.log('Games fetched successfully:', this.games());
       },
       error: (error) => {
         console.error('Erro ao buscar jogos:', error);
-        this.errorMessage = 'Não foi possível carregar os jogos. Tente novamente mais tarde.';
-        this.isLoading = false;
+
+        this.errorMessage.set(
+          'Não foi possível carregar os jogos. Tente novamente mais tarde.'
+        );
+
+        this.isLoading.set(false);
       },
     });
   }

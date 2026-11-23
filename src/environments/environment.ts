@@ -1,4 +1,3 @@
 export const environment = {
-  rawgApiUrl: 'https://api.rawg.io/api/games',
-  rawgApiKey: '',
+  gameHubApiUrl: 'http://localhost:5004/api'
 };

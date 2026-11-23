@@ -6,4 +6,11 @@
   @if (gameType || gamePrice) {
   <app-card-pricing [gameType]="gameType" [gamePrice]="gamePrice"></app-card-pricing>
   }
+
+  <title>Jogo aparecendo</title>
+  <p>{{ gameLabel }}</p>
+  <p>{{ gameCover }}</p>
+
+  <img [src]="gameCover" [alt]="gameLabel" class="card__img">
+  
 </a>
